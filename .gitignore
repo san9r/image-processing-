@@ -1,0 +1,6 @@
+data/
+annotations/
+images/
+*.npy
+*.index
+__pycache__/
