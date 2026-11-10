@@ -41,11 +41,14 @@ kb = build("captions_train2017.json", "kb_train_ids.json", keep_clean=True)
 val = build("captions_train2017.json", "val_ids.json", keep_clean=False)
 test = build("captions_val2017.json", "test_ids.json", keep_clean=False)
 
+test1000 = build("captions_val2017.json", "test_ids_1000.json", keep_clean=False)
+json.dump(test1000, open(OUT / "test_1000_references.json", "w"), indent=1)
+
 json.dump(kb, open(OUT / "kb_captions.json", "w"), indent=1)
 json.dump(val, open(OUT / "val_references.json", "w"), indent=1)
 json.dump(test, open(OUT / "test_references.json", "w"), indent=1)
 
-print("KB:", len(kb), "| val:", len(val), "| test:", len(test))
+print("KB:", len(kb), "| val:", len(val), "| test:", len(test), "| test1000:", len(test1000))
 print("\nExample:")
 print("raw  :", kb[0]["caption_raw"][0])
 print("clean:", kb[0]["caption_clean"][0])

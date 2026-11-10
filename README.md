@@ -8,19 +8,23 @@ python -m venv .venv
 pip install -r requirements.txt
 
 Download the COCO 2017 annotations (annotations_trainval2017.zip) from
-cocodataset.org and set `ANN_DIR` at the top of the scripts.
+cocodataset.org 
 
 ## Pipeline (run in this order)
-1. `explore.py`            quick look at the annotation files
-2. `split.py`              knowledge-base split (10,000 train2017 images, seed 42)
-3. `validation.py`         validation (100) and test (100, stratified by object count)
-4. `images.py`             downloads the images into images/kb, images/val, images/test
-5. `stats.py`              dataset statistics and figures
-6. `preprocess.py`         raw + clean captions (processed/)
-7. `embeddings.py`         CLIP ViT-B/32 image and caption embeddings (embeddings/)
-8. `build-index.py`        FAISS flat inner-product indexes (indexes/)
-9. `extract_metadata.py`   object metadata from COCO annotations (metadata/)
-10. `audit.py`             quality control and leakage audit (reports/qc_report.json)
+1.  explore.py             quick look at the annotation files
+2.  split.py               knowledge-base split (10,000 train2017 images, seed 42)
+3.  validation.py          validation (100) and the first test set (100)
+4.  split_test1000.py      test set of 1,000 val2017 images (contains the 100)
+5.  images.py              downloads the images
+6.  stats.py               statistics, before preprocessing
+7.  preprocess.py          raw + clean captions
+8.  embeddings.py          CLIP embeddings
+9.  build-index.py         FAISS indexes
+10. extract_metadata.py    object labels from COCO (human, confidence = 1)
+11. detect_objects.py      objects detected in the images (YOLO)
+12. stats2.py              statistics from captions and human labels
+13. stats3.py              threshold selection, detected-object statistics, before/after captions
+14. audit.py               quality control and leakage audit
 
 ## Splits
 | Split | Source | Size |

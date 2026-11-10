@@ -23,6 +23,7 @@ jobs = [
     ("kb_train_ids.json", train_urls, "kb"),
     ("val_ids.json", train_urls, "val"),
     ("test_ids.json", val_urls, "test"),
+    ("test_ids_1000.json", val_urls, "test"),
 ]
 
 tasks = []

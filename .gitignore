@@ -4,3 +4,5 @@ images/
 *.npy
 *.index
 __pycache__/
+*.pt
+.vscode/

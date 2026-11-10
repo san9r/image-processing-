@@ -102,6 +102,43 @@ check("all_images_present_and_readable", not bad, f"{len(bad)} bad files")
 for b in bad[:10]:
     print("  ", b)
 
+# ---------- additions: 1,000-image test split and detected objects ----------
+test1000_ids = json.load(open("splits/test_ids_1000.json"))
+S_t1000 = set(test1000_ids)
+test1000 = json.load(open("processed/test_1000_references.json"))
+
+check("test1000_size_and_unique", len(test1000_ids) == 1000 and len(S_t1000) == 1000)
+check("test100_inside_test1000", S_test <= S_t1000)
+check("leakage_kb_vs_test1000", not (S_kb & S_t1000))
+check("leakage_val_vs_test1000", not (S_val & S_t1000))
+check("index_has_no_test1000_image",
+      not (set(emb_ids) & S_t1000) and not (set(txt_img_ids) & S_t1000))
+check("test1000_references_ok",
+      [r["image_id"] for r in test1000] == test1000_ids
+      and all(len(r["caption_raw"]) == 5 and all(c.strip() for c in r["caption_raw"])
+              for r in test1000)
+      and all("caption_clean" not in r for r in test1000))
+
+bad2 = []
+for i in test1000_ids:
+    p = Path(f"images/test/{i:012d}.jpg")
+    try:
+        with Image.open(p) as im:
+            im.verify()
+    except Exception as e:
+        bad2.append(f"{p}: {e}")
+check("test1000_images_present_and_readable", not bad2, f"{len(bad2)} bad files")
+
+for fname, ids in [("detected_kb", kb_ids), ("detected_val", val_ids),
+                   ("detected_test1000", test1000_ids)]:
+    d = json.load(open(f"metadata/{fname}.json"))
+    confs = [o["confidence"] for v in d["images"].values() for o in v["objects"]]
+    check(f"{fname}_matches_ids", set(d["images"]) == {str(i) for i in ids})
+    check(f"{fname}_valid_confidences",
+          all(0 <= c <= 1 for c in confs) and min(confs) >= d["min_confidence"] - 1e-6,
+          f"{len(confs)} detections, detector {d['detector']}")
+
+
 # ---------- save ----------
 report["summary"] = {"checks": len(report), "failed": problems}
 json.dump(report, open(OUT / "qc_report.json", "w"), indent=1)
