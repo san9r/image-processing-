@@ -15,7 +15,7 @@ cocodataset.org
 2.  split.py               knowledge-base split (10,000 train2017 images, seed 42)
 3.  validation.py          validation (100) and the first test set (100)
 4.  split_test1000.py      test set of 1,000 val2017 images (contains the 100)
-5.  images.py              downloads the images
+5.  images.py              downloads the imagesgit add .
 6.  stats.py               statistics, before preprocessing
 7.  preprocess.py          raw + clean captions
 8.  embeddings.py          CLIP embeddings
