@@ -40,3 +40,6 @@ Evaluation captions are never in the knowledge base (checked in `audit.py`).
 - Index: IndexFlatIP (exact), cosine similarity
 - Image-to-caption sanity check: Recall@1 = 0.443, Recall@5 = 0.650
 - Quality control: all checks passed
+
+
+📄 **[Click here to view the Project Report](Phase1_Report_Final.pdf)**
